@@ -1,38 +1,29 @@
-import { Button, Navbar, Container, Nav, } from 'react-bootstrap';
+import react from 'react'
 import {  Switch, Route, Link } from "react-router-dom";
 
-import react, { Component } from 'react'
+import { Login } from '../components/Login'
+import { Navbar } from '../components/Navbar'
 
-export class Header extends Component{
+export class Header extends react.Component{
+
     constructor(props){
         super(props)
+        this.state = {
+            user : undefined
+        }
     }
 
     render(){
+
+        let { user } = this.state
+
+        if(!user){
+            return ( <Login/> )
+        }
+
         return(
             <header>
-                <Navbar bg="dark" variant="dark">
-                    <Container>
-                        <Navbar.Brand href="#home">Home</Navbar.Brand>
-                        <Nav className="me-auto">
-
-                            <Nav.Link>
-                                <Link to="/documentos">Mis Documentos </Link>
-                            </Nav.Link>
-                            
-                            <Nav.Link >
-                                <Link to="/autenticar">Autenticar</Link>
-                            </Nav.Link>
-                            
-                            <Nav.Link >
-                                <Link to="/firmas">Firmas</Link>
-                            </Nav.Link>
-
-                        </Nav>
-                    </Container>
-                </Navbar>
-
-
+                <Navbar/>
                 <Switch>
 
                     <Route path="/documentos">
@@ -52,9 +43,6 @@ export class Header extends Component{
                     </Route>
 
                 </Switch>
-
-
-
             </header>
         )
     }
