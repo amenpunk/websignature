@@ -23,7 +23,7 @@ const app = initializeApp(firebaseConfig);
 function App() {
   return (
       <Router className="App">
-          <Container>
+          <Container style={{ backgroundColor : 'blue' }}>
               <Header/>
           </Container>
       </Router>

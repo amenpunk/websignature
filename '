@@ -48,19 +48,19 @@ export class Login extends react.Component{
     render (){
         return(
             <Row style={{ padding : 50 }} className="login-card">
-                <Col md={4} style={{background : '#1e1e1e;',paddingTop : '15%'}}>
+                <Col md={4} style={{backgroundColor : '#1e1e1e',background : '#1e1e1e;',height : 700,paddingTop : '10%'}}>
                     <Form>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label style={{ color : 'white' }}>Correo:</Form.Label>
+                            <Form.Label>Correo</Form.Label>
                             <Form.Control onChange={this.Email} type="email" placeholder="Ingresa tu correo" />
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicPassword">
-                            <Form.Label style={{ color : 'white' }}>Contraseña:</Form.Label>
-                            <Form.Control  type="password" placeholder="Contraseña" />
+                            <Form.Label>Contrasena</Form.Label>
+                            <Form.Control  type="password" placeholder="Contrasena" />
                         </Form.Group>
 
-                        <Button style={{ backgroundColor : '#a6192e !important' }} variant="light" type="submit">
+                        <Button variant="light" type="submit">
                             Ingresar
                         </Button>
                         
@@ -71,7 +71,7 @@ export class Login extends react.Component{
                     </Form>
                 </Col>
                 <Col md={8}>
-                    <img style={{ width : '100%', height : 'auto', paddingTop : '5%'}} src="https://media.istockphoto.com/photos/businessman-working-in-modern-office-picture-id1316436137?b=1&k=20&m=1316436137&s=170667a&w=0&h=NxeojAsgCWOLMQVOeG5GbgmQDeNKspaOwZF9Xj1OOqk="/>
+                    <img style={{ width : '100%', height : 600}} src="https://media.istockphoto.com/photos/businessman-working-in-modern-office-picture-id1316436137?b=1&k=20&m=1316436137&s=170667a&w=0&h=NxeojAsgCWOLMQVOeG5GbgmQDeNKspaOwZF9Xj1OOqk="/>
                 </Col>
             </Row>
         )
