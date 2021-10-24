@@ -50,7 +50,7 @@ export class Login extends react.Component{
 
     render (){
         return(
-            <Row style={{ padding : 50 }} className="login-card">
+            <Row style={{ padding : 50, marginTop : 100  }} className="login-card">
                 <Col md={4} style={{paddingTop : '15%'}}>
                     <Form>
                         <Form.Group className="mb-3" controlId="formBasicEmail">

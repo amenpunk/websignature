@@ -1,10 +1,11 @@
 import react from 'react'
+
 import {  Switch, Route } from "react-router-dom";
+import { getAuth ,onAuthStateChanged } from 'firebase/auth';
 
 import { Login } from '../components/Login'
 import { Navigation } from '../components/Navbar'
-
-import { getAuth ,onAuthStateChanged } from 'firebase/auth';
+import { Home } from '../components/Home'
 
 
 export class Header extends react.Component{
@@ -20,7 +21,6 @@ export class Header extends react.Component{
         const auth = getAuth(); 
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                console.log('user -> ',user)
                 this.setState({ user })
             } else {
                 this.setState({ user : undefined })
@@ -30,9 +30,7 @@ export class Header extends react.Component{
 
     render(){
 
-
         let {user} =this.state
-        console.log(user)
 
         if(!user){
             return ( <Login/> )
@@ -56,7 +54,7 @@ export class Header extends react.Component{
                     </Route>
 
                     <Route path="/">
-                        <h1>Hola mundo </h1>
+                        <Home/>
                     </Route>
 
                 </Switch>
