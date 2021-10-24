@@ -1,10 +1,10 @@
-import react, { useRef } from 'react'
+import react from 'react'
 import { Row, Col, Form, Button } from 'react-bootstrap';
 import { 
     getAuth,
-    createUserWithEmailAndPassword, 
+    // createUserWithEmailAndPassword, 
     GoogleAuthProvider,
-    signInWithPopup
+    signInWithPopup,
 } from 'firebase/auth';
 const provider = new GoogleAuthProvider();
 
@@ -22,8 +22,10 @@ export class Login extends react.Component{
                 // This gives you a Google Access Token. You can use it to access the Google API.
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 const token = credential.accessToken;
+                console.log( token )
                 // The signed-in user info.
                 const user = result.user;
+                console.log( user )
                 // ...
             }).catch((error) => {
                 // Handle Errors here.
@@ -33,6 +35,7 @@ export class Login extends react.Component{
                 const email = error.email;
                 // The AuthCredential type that was used.
                 const credential = GoogleAuthProvider.credentialFromError(error);
+                console.log( errorCode, errorMessage, email, credential )
                 // ...
             });
     }
@@ -48,7 +51,7 @@ export class Login extends react.Component{
     render (){
         return(
             <Row style={{ padding : 50 }} className="login-card">
-                <Col md={4} style={{background : '#1e1e1e;',paddingTop : '15%'}}>
+                <Col md={4} style={{paddingTop : '15%'}}>
                     <Form>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label style={{ color : 'white' }}>Correo:</Form.Label>
@@ -65,13 +68,13 @@ export class Login extends react.Component{
                         </Button>
                         
                         <Button style={{ paddinLeft : 15, marginLeft : 15 }} onClick={this.inWithGoogle} variant="danger">
-                            <i style={{}} class="fa fa-google" aria-hidden="true"></i>
+                            <i style={{}} className="fa fa-google" aria-hidden="true"></i>
                         </Button>
 
                     </Form>
                 </Col>
                 <Col md={8}>
-                    <img style={{ width : '100%', height : 'auto', paddingTop : '5%'}} src="https://media.istockphoto.com/photos/businessman-working-in-modern-office-picture-id1316436137?b=1&k=20&m=1316436137&s=170667a&w=0&h=NxeojAsgCWOLMQVOeG5GbgmQDeNKspaOwZF9Xj1OOqk="/>
+                    <img alt="firma electronica login" style={{ width : '100%', height : 'auto', paddingTop : '5%'}} src="https://media.istockphoto.com/photos/businessman-working-in-modern-office-picture-id1316436137?b=1&k=20&m=1316436137&s=170667a&w=0&h=NxeojAsgCWOLMQVOeG5GbgmQDeNKspaOwZF9Xj1OOqk="/>
                 </Col>
             </Row>
         )

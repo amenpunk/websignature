@@ -18,12 +18,12 @@ const firebaseConfig = {
     measurementId: "G-S37X0MGZJL"
 };
 
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
 function App() {
   return (
       <Router className="App">
-          <Container style={{ backgroundColor : 'blue' }}>
+          <Container>
               <Header/>
           </Container>
       </Router>

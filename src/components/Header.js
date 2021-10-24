@@ -1,8 +1,11 @@
 import react from 'react'
-import {  Switch, Route, Link } from "react-router-dom";
+import {  Switch, Route } from "react-router-dom";
 
 import { Login } from '../components/Login'
-import { Navbar } from '../components/Navbar'
+import { Navigation } from '../components/Navbar'
+
+import { getAuth ,onAuthStateChanged } from 'firebase/auth';
+
 
 export class Header extends react.Component{
 
@@ -13,9 +16,23 @@ export class Header extends react.Component{
         }
     }
 
+    componentDidMount() {
+        const auth = getAuth(); 
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('user -> ',user)
+                this.setState({ user })
+            } else {
+                this.setState({ user : undefined })
+            }
+        });
+    }
+
     render(){
 
-        let { user } = this.state
+
+        let {user} =this.state
+        console.log(user)
 
         if(!user){
             return ( <Login/> )
@@ -23,7 +40,7 @@ export class Header extends react.Component{
 
         return(
             <header>
-                <Navbar/>
+                <Navigation/>
                 <Switch>
 
                     <Route path="/documentos">

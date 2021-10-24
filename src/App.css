@@ -1,6 +1,24 @@
 body{
     background-color : #1e1e1e;
+    font-family : iosevka !important;
 }
+*{
+    font-family : iosevka !important;
+}
+
+a{
+    text-decoration: none; 
+    color: white;
+}
+a:hover{
+    color : #b748ff;
+}
+
+@font-face {
+  font-family: "iosevka";
+  src: local("iosevka") url('./iosevka.ttf') format('ttf');
+}
+
 
 .App {
   text-align: center;
