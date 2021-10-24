@@ -32,24 +32,24 @@ export function Navigation () {
 
                     <Nav className="me-auto">
 
-                        <Nav.Link>
-                            <Link to="/documentos">Mis Documentos </Link>
-                        </Nav.Link>
+                        <Link className='nav-link' to="/documentos">
+                            Mis Documentos
+                        </Link>
+                        
+                        <Link className='nav-link' to="/autenticar">
+                            Autenticar
+                        </Link>
 
-                        <Nav.Link >
-                            <Link to="/autenticar">Autenticar</Link>
-                        </Nav.Link>
-
-                        <Nav.Link >
-                            <Link to="/firmas">Firmas</Link>
-                        </Nav.Link>
+                        <Link className='nav-link' to="/firmas">
+                            Firmas
+                        </Link>
 
                     </Nav>
 
 
                     <Form className="d-flex">
                         <Nav.Link >
-                            <Link to="/">{ user ? user.displayName : ""}</Link>
+                            <span to="/">{ user ? user.displayName : ""}</span>
                         </Nav.Link >
                         {/* <FormControl type="search" placeholder="Search" className="me-2" aria-label="Search" /> */}
                         <Button onClick={ () => setLoged(false) } variant="outline-danger">
@@ -60,7 +60,7 @@ export function Navigation () {
 
 
                 </Navbar.Collapse>
-        </Container>
+            </Container>
         </Navbar>
     )
 }

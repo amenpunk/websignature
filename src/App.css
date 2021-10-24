@@ -1,3 +1,15 @@
+.stadistics {
+    padding : 50px; 
+    background-color : #1e1e1e;
+    text-align : center;
+}
+.numberS{
+    text-align : center;
+    font-size : 35px;
+}
+p, strong, i, body{
+    color : white;
+}
 body{
     background-color : #1e1e1e;
     font-family : iosevka !important;
@@ -12,6 +24,12 @@ a{
 }
 a:hover{
     color : #b748ff;
+}
+.nav-link{
+    color : white !important;
+}
+.nav-link:hover{
+    color : #b748ff !important;
 }
 
 @font-face {

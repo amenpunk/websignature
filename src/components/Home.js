@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from 'react'
 import { API_GATEWAY } from '../App'
-import { Row, Col, Container, ListGroup } from 'react-bootstrap'
+import { Image,Row, Col, Container, ListGroup } from 'react-bootstrap'
 import { getAuth} from 'firebase/auth';
 
 export function Home () {
@@ -9,6 +9,7 @@ export function Home () {
     let [files, setFiles] = useState(null) 
     let [user, setUser] = useState(null) 
     let [sign, setSign] = useState(null) 
+    let [uid, setUID] = useState(null) 
 
     useEffect( () => {
 
@@ -35,6 +36,7 @@ export function Home () {
             })
 
         setUser(user)
+        setUID(user.uid)
 
     }, [API])
 
@@ -46,22 +48,32 @@ export function Home () {
                         <Col>
                             <center>
                                 <h1 style={{ color : "white" }}> { user ? user.displayName : "" } </h1>
-                                <img alt="profile" src={user ? user.photoURL : ""}/>
+                                  <Image src={ user ? user.photoURL : "" } rounded />
                             </center>
                             <center>
-                                <img style={{ width : 250, padding :15 }} src={ "data:image/png;base64, " + sign ? sign : '' } alt="firma manuscrita" />
+                                {
+                                    sign ? 
+                                    <img style={{ width : 250, padding :15 }} src={ "data:image/png;base64, " + sign ? sign : '' } alt="firma manuscrita" />
+                                    : undefined
+                                }
+                                <h5 style={{ padding : 5 }}><strong>SIGN:</strong> <i>{uid}</i> </h5>
                             </center>
                         </Col>
                     </Row>
                 </Col>
                 <Col md={6}>
-                    <ListGroup>
+                    <ListGroup style={{ paddingTop : 15 }}>
                         {
                             files ? 
                                 files.map( ({ file, signature, timestamp, write, document }) => {  
                                     return(
-                                        <ListGroup.Item key={document}>
-                                            { file }
+                                        <ListGroup.Item style={{ wordWrap: "break-word" , backgroundColor : '#1e1e1e', padding : 25, marginTop : 5 }} key={document}>
+                                            <p>
+                                                <i style={{ color : 'white' }}> {file.toUpperCase()} </i>
+                                                <br/>
+                                                <strong style={{ color : 'white' }}> { new Date( write * 1000  ).toLocaleString() } </strong>
+                                                <strong style={{ wordWrap: "break-word" , color : '#0dddd3',   whiteSpace: "normal" }}> {signature} </strong>
+                                            </p>
                                         </ListGroup.Item>
                                     )
                                 })
@@ -69,6 +81,23 @@ export function Home () {
                         }
                     </ListGroup>
                 </Col>
+            </Row>
+            <Row>
+                <div style={{ paddingBottom : 15 ,paddingTop: 10,display : 'flex', flexDirection : "row", justifyContent : 'space-around' }}>
+
+                    <div className="stadistics">
+                        <p><strong>FIRMAS HECHAS:</strong> <i className="numberS">32</i> </p>
+                    </div>
+                    
+                    <div className="stadistics">
+                        <p><strong>FIRMAS RECIBIDAS:</strong> <i className="numberS">20</i> </p>
+                    </div>
+                    
+                    <div className="stadistics">
+                        <p><strong>TOTAL DOCUMENTOS:</strong>  <i className="numberS">15</i> </p>
+                    </div>
+
+                </div>
             </Row>
         </Container>
     )
