@@ -83,7 +83,7 @@ export function Home () {
                 </Col>
             </Row>
             <Row>
-                <div style={{ paddingBottom : 15 ,paddingTop: 10,display : 'flex', flexDirection : "row", justifyContent : 'space-around' }}>
+                <div style={{ paddingBottom : 15 ,paddingTop: 10,display : 'flex', flexDirection : "row", justifyContent : 'space-around', flexWrap : 'wrap' }}>
 
                     <div className="stadistics">
                         <p><strong>FIRMAS HECHAS:</strong> <i className="numberS">32</i> </p>
@@ -99,6 +99,7 @@ export function Home () {
 
                 </div>
             </Row>
+
         </Container>
     )
 }

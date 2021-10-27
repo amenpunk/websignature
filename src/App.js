@@ -6,6 +6,7 @@ import { createContext } from 'react'
 
 import Container from './components/container';
 import { Header } from './components/Header'
+import { Footer } from './components/Foooter'
 
 const firebaseConfig = {
     apiKey: "AIzaSyBlbF796CnVCBnZSAjcSTlzMrJnaPTZmhg",
@@ -17,8 +18,6 @@ const firebaseConfig = {
     appId: "1:1081588619626:web:4f8063c2085ce2e35bad13",
     measurementId: "G-S37X0MGZJL"
 };
-
-
 
 initializeApp(firebaseConfig);
 
@@ -41,6 +40,7 @@ function App() {
           <API_GATEWAY.Provider value={GATEWAY.dev}>
               <Container>
                   <Header/>
+                  <Footer/>
               </Container>
           </API_GATEWAY.Provider>
       </Router>

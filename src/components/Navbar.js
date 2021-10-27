@@ -21,7 +21,7 @@ export function Navigation () {
 
 
     return(
-        <Navbar style={{ backgroundColor : '#101010', marginTop : 25 }} variant="dark" expand="lg">
+        <Navbar style={{ backgroundColor : '#101010', marginTop : 30 }} variant="dark" expand="lg">
             <Container fluid>
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
