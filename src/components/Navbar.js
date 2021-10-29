@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Button,Form,Container, Nav, Navbar } from 'react-bootstrap';
+import { Button,Form,Container, Nav, Navbar, Image } from 'react-bootstrap';
 import { getAuth ,signOut } from 'firebase/auth';
 import { useState, useEffect } from 'react'
 
@@ -14,8 +14,6 @@ export function Navigation () {
             signOut(auth)
         }
         let user = auth.currentUser;
-        console.log('c user -> ', user)
-
         setUser( user )
     }, [loged] )
 
@@ -47,7 +45,11 @@ export function Navigation () {
                     </Nav>
 
 
-                    <Form className="d-flex">
+                    
+                    <Form className="d-flex" style={{ justifyContent: "flex-start", alignItems: "center" }}>
+
+                        <Image style={{ width : 50 }} src={ user ? user.photoURL : "" } rounded />
+
                         <Nav.Link >
                             <span to="/">{ user ? user.displayName : ""}</span>
                         </Nav.Link >

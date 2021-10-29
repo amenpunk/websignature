@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from 'react'
 import { API_GATEWAY } from '../App'
-import { Image,Row, Col, Container, ListGroup } from 'react-bootstrap'
+import { Row, Col, Container, ListGroup } from 'react-bootstrap'
 import { getAuth} from 'firebase/auth';
 
 export function Home () {
@@ -16,20 +16,23 @@ export function Home () {
         let auth = getAuth();
         let user = auth.currentUser
 
+        /// documentos
         let gateway = API + "/firma"
         fetch(gateway+"?uid="+user.uid)
             .then( docs => docs.json() )
             .then( f => {
-                setFiles(f.data)
+                return setFiles(f.data)
             }).catch( e => {
                 console.log( 'fetch error', e )
             })
 
 
+        // firma digital
         gateway = API +"/sign?uid="+user.uid
-        fetch(gateway+"?uid="+user.uid)
+        fetch(gateway)
             .then( docs => docs.json() )
             .then( f => {
+                console.log('dibujo -> ', f)
                 return f.data ?  setSign(f.data.image) : null
             }).catch( e => {
                 console.log( 'fetch error', e )
@@ -47,13 +50,9 @@ export function Home () {
                     <Row>
                         <Col>
                             <center>
-                                <h1 style={{ color : "white" }}> { user ? user.displayName : "" } </h1>
-                                  <Image src={ user ? user.photoURL : "" } rounded />
-                            </center>
-                            <center>
                                 {
                                     sign ? 
-                                    <img style={{ width : 250, padding :15 }} src={ "data:image/png;base64, " + sign ? sign : '' } alt="firma manuscrita" />
+                                    <img style={{ width : 250, padding :15 }} src={ `data:image/png;base64, ${sign}`} alt="firma manuscrita" />
                                     : undefined
                                 }
                                 <h5 style={{ padding : 5 }}><strong>SIGN:</strong> <i>{uid}</i> </h5>
@@ -83,7 +82,7 @@ export function Home () {
                 </Col>
             </Row>
             <Row>
-                <div style={{ paddingBottom : 15 ,paddingTop: 10,display : 'flex', flexDirection : "row", justifyContent : 'space-around', flexWrap : 'wrap' }}>
+                <div style={{ backgroundColor : "#121212",padding : 15,display : 'flex', flexDirection : "row", justifyContent : 'space-around', flexWrap : 'wrap' }}>
 
                     <div className="stadistics">
                         <p><strong>FIRMAS HECHAS:</strong> <i className="numberS">32</i> </p>
