@@ -26,7 +26,7 @@ const GATEWAY =  {
         API : 'http://localhost:8000',
         IPFS : 'http://localhost:8080/'
     },
-    PRO : {
+    pro : {
         API : 'http://143.244.178.41:80',
         IPFS : 'https://ipfs.io'
     }
@@ -37,7 +37,7 @@ export const API_GATEWAY = createContext(GATEWAY)
 function App() {
   return (
       <Router className="App">
-          <API_GATEWAY.Provider value={GATEWAY.dev}>
+          <API_GATEWAY.Provider value={GATEWAY.pro}>
               <Container>
                   <Header/>
                   <Footer/>

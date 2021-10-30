@@ -6,6 +6,7 @@ import { getAuth ,onAuthStateChanged } from 'firebase/auth';
 import { Login } from '../components/Login'
 import { Navigation } from '../components/Navbar'
 import { Home } from '../components/Home'
+import { Documents  } from '../components/Documents'
 
 
 export class Header extends react.Component{
@@ -42,7 +43,7 @@ export class Header extends react.Component{
                 <Switch>
 
                     <Route path="/documentos">
-                        <h1>Mis documentos</h1>
+                        <Documents/>
                     </Route>
 
                     <Route path="/autenticar">
