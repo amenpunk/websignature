@@ -3,19 +3,35 @@ import { API_GATEWAY } from '../App'
 import { Row, Col, Container, Card, Button} from 'react-bootstrap'
 import { getAuth } from 'firebase/auth';
 
+import { Document, Page } from 'react-pdf';
+
+
 
 function DocCard (props)  {
+
     console.log('props -> ', props)
     let { filename, hash, write } = props.file
+    let { IPFS } = useContext(API_GATEWAY)
+    let url = IPFS + "/ipfs/" + hash;
+
+    const [numPages, setNumPages] = useState(null);
+    const [pageNumber, setPageNumber] = useState(1);
+
+    function onDocumentLoadSuccess({ numPages }) {
+        setNumPages(numPages);
+    }
+
+
     return (
         <div>
-            <Card style={{ width: '18rem', backgroundColor : '#101010', padding : 15  }}>
-                <Card.Img variant="top" src="holder.js/100px180" />
+            <Card style={{ width: '18rem', backgroundColor : '#101010', padding : 40, border : '1px solid white', margin : 15 }}>
+                {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
                 <Card.Body stye={{ backgroundColor : '#101010' }}>
-                    <Card.Title>{ filename }</Card.Title>
-                    <Card.Text> { hash }</Card.Text>
+                    <Card.Title>{ filename.toUpperCase() }</Card.Title>
+                    <Card.Text style={{ color : '#b748ff'  }}> { hash }</Card.Text>
                     <Card.Text> { new Date(write * 1000).toLocaleString() }</Card.Text>
-                    <Button variant="primary">Go somewhere</Button>
+                    <Button variant="primary">Firmar</Button>
+
                 </Card.Body>
             </Card>
         </div>
