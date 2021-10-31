@@ -7,7 +7,6 @@ export function Home () {
 
     let { API } = useContext(API_GATEWAY)
     let [files, setFiles] = useState(null) 
-    let [user, setUser] = useState(null) 
     let [sign, setSign] = useState(null) 
     let [uid, setUID] = useState(null) 
 
@@ -38,7 +37,6 @@ export function Home () {
                 console.log( 'fetch error', e )
             })
 
-        setUser(user)
         setUID(user.uid)
 
     }, [API])

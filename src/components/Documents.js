@@ -1,18 +1,30 @@
 import { useContext, useState, useEffect } from 'react'
 import { API_GATEWAY } from '../App'
-import { Row, Col, Container, Card, Button} from 'react-bootstrap'
+import { Row, Col, Container, Card, Button, Spinner} from 'react-bootstrap'
 import { getAuth } from 'firebase/auth';
+import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
-import { Document, Page } from 'react-pdf';
+function Cargando(){
+    return(
+        <center>
+            <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </Spinner>
+        </center>
+    )
+}
+
 
 
 
 function DocCard (props)  {
 
+
     console.log('props -> ', props)
     let { filename, hash, write } = props.file
     let { IPFS } = useContext(API_GATEWAY)
-    let url = IPFS + "/ipfs/" + hash;
+    let url = IPFS + "ipfs/" + hash;
 
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
@@ -22,15 +34,25 @@ function DocCard (props)  {
     }
 
 
+
+
     return (
         <div>
-            <Card style={{ width: '18rem', backgroundColor : '#101010', padding : 40, border : '1px solid white', margin : 15 }}>
-                {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
+            <Card style={{ backgroundColor : '#101010', padding : 40, border : '1px solid white', margin : 15, width : 354 }}>
+
                 <Card.Body stye={{ backgroundColor : '#101010' }}>
-                    <Card.Title>{ filename.toUpperCase() }</Card.Title>
+
+                    <Document loading={<Cargando/>} file={url} onLoadSuccess={onDocumentLoadSuccess} >
+                        <Page renderMode="svg" height={100} width={250} pageNumber={1} loading={<Cargando/>} />
+                    </Document>
+
+
+                    <Card.Title><center style={{ padding : 15 }}>{ filename.toUpperCase() }</center></Card.Title>
                     <Card.Text style={{ color : '#b748ff'  }}> { hash }</Card.Text>
-                    <Card.Text> { new Date(write * 1000).toLocaleString() }</Card.Text>
-                    <Button variant="primary">Firmar</Button>
+                    <Card.Text><center> { new Date(write * 1000).toLocaleString() } </center> </Card.Text>
+                    <center>
+                        <Button variant="primary">Firmar</Button>
+                    </center>
 
                 </Card.Body>
             </Card>

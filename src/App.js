@@ -37,7 +37,7 @@ export const API_GATEWAY = createContext(GATEWAY)
 function App() {
   return (
       <Router className="App">
-          <API_GATEWAY.Provider value={GATEWAY.pro}>
+          <API_GATEWAY.Provider value={GATEWAY.dev}>
               <Container>
                   <Header/>
                   <Footer/>
