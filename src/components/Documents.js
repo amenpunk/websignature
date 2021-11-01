@@ -51,35 +51,38 @@ function DocCard (props)  {
 
 
     return (
-        <div>
-            <Card style={{ backgroundColor : '#101010', padding : 40, border : '1px solid white', margin : 15, width : 354 }}>
+        <Card style={{ backgroundColor : '#101010', padding : 40, border : '1px solid white', margin : 15, width : 354 }}>
 
-                <Card.Header style={{ display : 'flex', justifyContent : 'flex-end' }}>
+            <Card.Header style={{ display : 'flex', justifyContent : 'flex-end' }}>
 
-                    <DropdownButton align="end" title="Opciones" id="dropdown-menu-align-end">
-                        <Dropdown.Item onClick={() => QR(hash)} eventKey="1">Generar QR</Dropdown.Item>
-                        <Dropdown.Item onClick={ () => console.log('ver firmas') } eventKey="2">Ver firmas</Dropdown.Item>
-                        <Dropdown.Item onClick={ () => console.log('ver documento') } eventKey="3">ver Documneto</Dropdown.Item>
-                        <Dropdown.Divider />
-                        <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
-                    </DropdownButton>
+                <DropdownButton align="end" title="" id="dropdown-menu-align-end">
+                    <Dropdown.Item onClick={() => QR(hash)} eventKey="1">Generar QR</Dropdown.Item>
+                    <Dropdown.Item onClick={ () => console.log('ver firmas') } eventKey="2">Ver firmas</Dropdown.Item>
+                    <Dropdown.Item onClick={ () => console.log('ver documento') } eventKey="3">Ver Documento</Dropdown.Item>
+                    <Dropdown.Divider />
+                    <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
+                </DropdownButton>
 
-                </Card.Header>
+            </Card.Header>
 
-                <Card.Body stye={{ backgroundColor : '#101010' }}>
+            <Card.Body style={{     
+                backgroundColor: "rgb(16, 16, 16)",
+                "display": 'flex',
+                flexDirection: "column",
+                alignContent: "flex-start",
+                justifyContent: "space-around",
+                alignItems: 'stretch' }}>
 
-                    <Document loading={<Cargando/>} file={url} onLoadSuccess={onDocumentLoadSuccess} >
-                        <Page renderMode="svg" height={100} width={250} pageNumber={1} loading={<Cargando/>} />
-                    </Document>
+                <Document loading={<Cargando/>} file={url} onLoadSuccess={onDocumentLoadSuccess} >
+                    <Page renderMode="svg" height={100} width={250} pageNumber={1} loading={<Cargando/>} />
+                </Document>
 
+                <Card.Title style={{ paddingTop : 15 }}>{ filename.toUpperCase()}</Card.Title>
+                <Card.Text style={{ color : '#b748ff'  }}> { hash }</Card.Text>
+                <Card.Text>{ new Date(write * 1000).toLocaleString() } </Card.Text>
 
-                    <Card.Title>{ filename.toUpperCase()}</Card.Title>
-                    <Card.Text style={{ color : '#b748ff'  }}> { hash }</Card.Text>
-                    <Card.Text>{ new Date(write * 1000).toLocaleString() } </Card.Text>
-
-                </Card.Body>
-            </Card>
-        </div>
+            </Card.Body>
+        </Card>
     )
 }
 
@@ -111,17 +114,20 @@ export function Documents () {
     }, [API])
 
     return (
-        <Container style={{ backgroundColor : '#101010', marginTop : 15 }}>
-            <Row>
-                <Col>
+        <div style={{
+                backgroundColor: "rgb(16, 16, 16)",
+                marginTop: 15,
+                display: "flex",
+                flexWrap: "wrap",
+                alignContent: "center",
+                justifyContent: "space-evenly",
 
-                    {
-                        files ? 
-                        files.map( file => <DocCard  key={file.hash} file={file}/> )
-                        : undefined
-                    }
-                </Col>
-            </Row>
-        </Container>
+            }}>
+            {
+                files ? 
+                    files.map( file => <DocCard  key={file.hash} file={file}/> )
+                    : undefined
+            }
+        </div>
     )
 }

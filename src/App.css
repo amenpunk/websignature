@@ -1,4 +1,11 @@
-
+.btn-outline-danger{
+    background-color : #0dddd3 !important;
+    border-color: #0dddd3 !important;
+    color : #101010 !important;
+}
+.card-header { 
+    padding :0 !important;
+}
 .btn-primary{
     background-color : #0dddd3 !important;
     border-color: #0dddd3 !important;
