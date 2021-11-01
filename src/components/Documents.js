@@ -1,22 +1,20 @@
 import { useContext, useState, useEffect } from 'react'
 import { API_GATEWAY } from '../App'
-import { Row, Col, Container, Card, Button, Spinner} from 'react-bootstrap'
+import { Row, Col, Dropdown, DropdownButton, Container, Card, Button, Spinner } from 'react-bootstrap'
 import { getAuth } from 'firebase/auth';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import Swal from 'sweetalert2'
 
 function Cargando(){
     return(
-        <center>
+        <>
             <Spinner animation="border" role="status">
                 <span className="visually-hidden">Loading...</span>
             </Spinner>
-        </center>
+        </>
     )
 }
-
-
-
 
 function DocCard (props)  {
 
@@ -33,12 +31,31 @@ function DocCard (props)  {
         setNumPages(numPages);
     }
 
-
+    function QR () {
+        Swal.fire({
+            title: 'Error!',
+            text: 'Do you want to continue',
+            icon: 'error',
+            confirmButtonText: 'Cool'
+        })
+    } 
 
 
     return (
         <div>
             <Card style={{ backgroundColor : '#101010', padding : 40, border : '1px solid white', margin : 15, width : 354 }}>
+
+                <Card.Header style={{ display : 'flex', justifyContent : 'flex-end' }}>
+
+                    <DropdownButton align="end" title="Opciones" id="dropdown-menu-align-end">
+                        <Dropdown.Item onClick={QR} eventKey="1">Generar QR</Dropdown.Item>
+                        <Dropdown.Item onClick={ () => console.log('ver firmas') } eventKey="2">Ver firmas</Dropdown.Item>
+                        <Dropdown.Item onClick={ () => console.log('ver documento') } eventKey="3">ver Documneto</Dropdown.Item>
+                        <Dropdown.Divider />
+                        <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
+                    </DropdownButton>
+
+                </Card.Header>
 
                 <Card.Body stye={{ backgroundColor : '#101010' }}>
 
@@ -47,12 +64,9 @@ function DocCard (props)  {
                     </Document>
 
 
-                    <Card.Title><center style={{ padding : 15 }}>{ filename.toUpperCase() }</center></Card.Title>
+                    <Card.Title>{ filename.toUpperCase()}</Card.Title>
                     <Card.Text style={{ color : '#b748ff'  }}> { hash }</Card.Text>
-                    <Card.Text><center> { new Date(write * 1000).toLocaleString() } </center> </Card.Text>
-                    <center>
-                        <Button variant="primary">Firmar</Button>
-                    </center>
+                    <Card.Text>{ new Date(write * 1000).toLocaleString() } </Card.Text>
 
                 </Card.Body>
             </Card>

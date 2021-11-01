@@ -1,3 +1,15 @@
+
+.btn-primary{
+    background-color : #0dddd3 !important;
+    border-color: #0dddd3 !important;
+    color : #101010;
+    font-weight : bold;
+}
+.btn-primary:hover{
+    color : #101010 !important;
+    font-weight : bold !important;
+}
+
 .stadistics {
     padding : 20px; 
     background-color : #1e1e1e;
