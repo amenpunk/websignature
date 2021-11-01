@@ -1,10 +1,15 @@
 import { useContext, useState, useEffect } from 'react'
 import { API_GATEWAY } from '../App'
-import { Row, Col, Dropdown, DropdownButton, Container, Card, Button, Spinner } from 'react-bootstrap'
+import { Row, Col, Dropdown, DropdownButton, Container, Card, Spinner } from 'react-bootstrap'
 import { getAuth } from 'firebase/auth';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+import QRCode from "react-qr-code";
+
+const MySwal = withReactContent(Swal)
+
 
 function Cargando(){
     return(
@@ -24,19 +29,23 @@ function DocCard (props)  {
     let { IPFS } = useContext(API_GATEWAY)
     let url = IPFS + "ipfs/" + hash;
 
-    const [numPages, setNumPages] = useState(null);
-    const [pageNumber, setPageNumber] = useState(1);
+    const [numPages, setNumPages] = useState('');
+    console.log(numPages)
 
     function onDocumentLoadSuccess({ numPages }) {
         setNumPages(numPages);
     }
 
-    function QR () {
-        Swal.fire({
-            title: 'Error!',
-            text: 'Do you want to continue',
-            icon: 'error',
-            confirmButtonText: 'Cool'
+    function QR ( hash ) {
+        MySwal.fire({
+            title: <p style={{ color : "#101010" }}>Hello World</p>,
+            footer: 'Copyright 2018',
+            didOpen: () => {
+                MySwal.clickConfirm()
+            }
+        }).then(() => {
+            return MySwal.fire( <QRCode value={hash} />
+            )
         })
     } 
 
@@ -48,7 +57,7 @@ function DocCard (props)  {
                 <Card.Header style={{ display : 'flex', justifyContent : 'flex-end' }}>
 
                     <DropdownButton align="end" title="Opciones" id="dropdown-menu-align-end">
-                        <Dropdown.Item onClick={QR} eventKey="1">Generar QR</Dropdown.Item>
+                        <Dropdown.Item onClick={() => QR(hash)} eventKey="1">Generar QR</Dropdown.Item>
                         <Dropdown.Item onClick={ () => console.log('ver firmas') } eventKey="2">Ver firmas</Dropdown.Item>
                         <Dropdown.Item onClick={ () => console.log('ver documento') } eventKey="3">ver Documneto</Dropdown.Item>
                         <Dropdown.Divider />
