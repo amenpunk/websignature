@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from 'react'
 import { API_GATEWAY } from '../App'
-import { Row, Col, Dropdown, DropdownButton, Container, Card, Spinner } from 'react-bootstrap'
+import { ListGroup,Dropdown, DropdownButton, Card, Spinner } from 'react-bootstrap'
 import { getAuth } from 'firebase/auth';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -10,24 +10,50 @@ import QRCode from "react-qr-code";
 
 const MySwal = withReactContent(Swal)
 
+function Signs (props) {
+    let { firmas } = props;
+    console.log('firmas -> ',  firmas)
+    return (
+        <ListGroup style={{ paddingTop : 15 }}>
+            {
+                firmas && firmas.length ? 
+                    firmas.map( ({ file, signature, timestamp, write, document, name, mail  }) => {  
+                        return(
+                            <ListGroup.Item style={{ wordWrap: "break-word" , backgroundColor : '#1e1e1e', padding : 25, marginTop : 5 }} key={signature}>
+                                <p>
+                                    <i style={{ color : 'white' }}> {name || mail} </i> <br/>
+                                    <i style={{ color : 'white' }}> {file.toUpperCase()} </i>
+                                    <br/>
+                                    <strong style={{ color : 'white' }}> { new Date( write * 1000  ).toLocaleString() } </strong>
+                                    <strong style={{ wordWrap: "break-word" , color : '#0dddd3',   whiteSpace: "normal" }}> {signature} </strong>
+                                </p>
+                            </ListGroup.Item>
+                        )
+                    })
+                    : <h1>No hay firmas sobre el documento</h1>
+            }
+        </ListGroup>
+    ) 
+}
 
 function Cargando(){
     return(
-        <>
+        <center>
             <Spinner animation="border" role="status">
                 <span className="visually-hidden">Loading...</span>
             </Spinner>
-        </>
+        </center>
     )
 }
 
-function DocCard (props)  {
 
+function DocCard (props)  {
 
     console.log('props -> ', props)
     let { filename, hash, write } = props.file
-    let { IPFS } = useContext(API_GATEWAY)
+    let { IPFS, API } = useContext(API_GATEWAY)
     let url = IPFS + "ipfs/" + hash;
+    let signs_gateway = API + "/file"
 
     const [numPages, setNumPages] = useState('');
     console.log(numPages)
@@ -35,6 +61,21 @@ function DocCard (props)  {
     function onDocumentLoadSuccess({ numPages }) {
         setNumPages(numPages);
     }
+
+    async function SignList (hash ) {
+        let docs = await fetch(signs_gateway+"?hash="+ hash)
+        let { data : firmas } = await docs.json();
+
+        MySwal.fire({ didOpen: () => MySwal.clickConfirm() })
+            .then(() => {
+                return MySwal.fire( <Signs firmas={firmas} /> )
+        })
+
+
+
+    }
+
+    const Watch = () => window.open( url, '_blank').focus();
 
     function QR ( hash ) {
         MySwal.fire({
@@ -57,8 +98,8 @@ function DocCard (props)  {
 
                 <DropdownButton align="end" title="" id="dropdown-menu-align-end">
                     <Dropdown.Item onClick={() => QR(hash)} eventKey="1">Generar QR</Dropdown.Item>
-                    <Dropdown.Item onClick={ () => console.log('ver firmas') } eventKey="2">Ver firmas</Dropdown.Item>
-                    <Dropdown.Item onClick={ () => console.log('ver documento') } eventKey="3">Ver Documento</Dropdown.Item>
+                    <Dropdown.Item onClick={() => SignList(hash) } eventKey="2">Ver firmas</Dropdown.Item>
+                    <Dropdown.Item onClick={() => Watch(hash) } eventKey="3">Ver Documento</Dropdown.Item>
                     <Dropdown.Divider />
                     <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
                 </DropdownButton>
