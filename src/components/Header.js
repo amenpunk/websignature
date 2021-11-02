@@ -7,6 +7,7 @@ import { Login } from '../components/Login'
 import { Navigation } from '../components/Navbar'
 import { Home } from '../components/Home'
 import { Documents  } from '../components/Documents'
+import { Autenticar  } from '../components/Autenticar'
 
 
 export class Header extends react.Component{
@@ -47,7 +48,7 @@ export class Header extends react.Component{
                     </Route>
 
                     <Route path="/autenticar">
-                        <h1>Autenticar</h1>
+                        <Autenticar/>
                     </Route>
                     
                     <Route path="/firmas">
