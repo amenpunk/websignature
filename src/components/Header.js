@@ -8,6 +8,7 @@ import { Navigation } from '../components/Navbar'
 import { Home } from '../components/Home'
 import { Documents  } from '../components/Documents'
 import { Autenticar  } from '../components/Autenticar'
+import { Firmas  } from '../components/Firmas'
 
 
 export class Header extends react.Component{
@@ -43,6 +44,10 @@ export class Header extends react.Component{
                 <Navigation/>
                 <Switch>
 
+                    <Route exact path="/">
+                        <Home/>
+                    </Route>
+
                     <Route path="/documentos">
                         <Documents/>
                     </Route>
@@ -52,12 +57,9 @@ export class Header extends react.Component{
                     </Route>
                     
                     <Route path="/firmas">
-                        <h1>Mis firmas</h1>
+                        <Firmas/>
                     </Route>
 
-                    <Route path="/">
-                        <Home/>
-                    </Route>
 
                 </Switch>
             </header>

@@ -7,12 +7,13 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import QRCode from "react-qr-code";
+import { Link, useHistory } from "react-router-dom";
+
 
 const MySwal = withReactContent(Swal)
 
 function Signs (props) {
     let { firmas } = props;
-    console.log('firmas -> ',  firmas)
     return (
         <ListGroup style={{ paddingTop : 15 }}>
             {
@@ -49,14 +50,13 @@ function Cargando(){
 
 function DocCard (props)  {
 
-    console.log('props -> ', props)
     let { filename, hash, write } = props.file
+    let history = props.history
+
     let { IPFS, API } = useContext(API_GATEWAY)
     let url = IPFS + "ipfs/" + hash;
     let signs_gateway = API + "/file"
-
     const [numPages, setNumPages] = useState('');
-    console.log(numPages)
 
     function onDocumentLoadSuccess({ numPages }) {
         setNumPages(numPages);
@@ -90,6 +90,8 @@ function DocCard (props)  {
         })
     } 
 
+    const Navigate = () =>  history.push("/firmas", { hash });
+
 
     return (
         <Card style={{ backgroundColor : '#101010', padding : 40, border : '1px solid white', margin : 15, width : 354 }}>
@@ -101,7 +103,18 @@ function DocCard (props)  {
                     <Dropdown.Item onClick={() => SignList(hash) } eventKey="2">Ver firmas</Dropdown.Item>
                     <Dropdown.Item onClick={() => Watch(hash) } eventKey="3">Ver Documento</Dropdown.Item>
                     <Dropdown.Divider />
-                    <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
+                    <Dropdown.Item onClick={Navigate} eventKey="4">
+
+                        {/* <Link className='nav-link' to={{ */}
+                        {/*     pathname : "/firmas", */}
+                        {/*     props : { */}
+                        {/*         ref : '12390128309128310928301928301298310923' */}
+                        {/*     } */}
+                        {/* }}> */}
+                            <em style={{ color : '#101010' }}> Firmar </em>
+                        {/* </Link> */}
+
+                    </Dropdown.Item>
                 </DropdownButton>
 
             </Card.Header>
@@ -128,10 +141,11 @@ function DocCard (props)  {
 }
 
 
-export function Documents () {
+export function Documents (props) {
 
     let { API } = useContext(API_GATEWAY)
     let [files, setFiles] = useState(null) 
+    const history = useHistory();
 
     useEffect( () => {
 
@@ -166,7 +180,7 @@ export function Documents () {
             }}>
             {
                 files ? 
-                    files.map( file => <DocCard  key={file.hash} file={file}/> )
+                    files.map( file => <DocCard  key={file.hash} file={file} history={history}/> )
                     : undefined
             }
         </div>

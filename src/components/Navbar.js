@@ -39,17 +39,13 @@ export function Navigation () {
                         </Link>
 
                         <Link className='nav-link' to="/firmas">
-                            Firmas
+                            Firmar
                         </Link>
 
                     </Nav>
-
-
                     
                     <Form className="d-flex" style={{ justifyContent: "flex-start", alignItems: "center" }}>
-
                         <Image style={{ width : 50 }} src={ user ? user.photoURL : "" } rounded />
-
                         <Nav.Link >
                             <span to="/">{ user ? user.displayName : ""}</span>
                         </Nav.Link >
