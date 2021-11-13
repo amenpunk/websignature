@@ -2,6 +2,8 @@ import { useContext, useState, useEffect } from 'react'
 import { API_GATEWAY } from '../App'
 import { Row, Col, Container, ListGroup } from 'react-bootstrap'
 import { getAuth} from 'firebase/auth';
+import { collection, addDoc, getDocs } from "firebase/firestore";
+import { db } from '../App'
 
 export function Home () {
 
@@ -9,8 +11,29 @@ export function Home () {
     let [files, setFiles] = useState(null) 
     let [sign, setSign] = useState(null) 
     let [uid, setUID] = useState(null) 
+    
+    let [totalFiles, setTotalFiles] = useState(0) 
 
     useEffect( () => {
+
+        getDocs(collection(db, "files")).then( querySnapshot => {
+            let total = 0
+            querySnapshot.forEach((doc) => {
+                total=total+1;
+                // console.log(`${doc.id} => ${doc.data()}`);
+            });
+            console.log('total files -> ',total)
+            setTotalFiles(total)
+
+        }).catch(e => console.log('error fetching files >>', e))
+        
+        getDocs(collection(db, "firmas")).then( querySnapshot => {
+            querySnapshot.forEach((doc) => {
+                console.log(`${doc.id} => ${doc.data()}`);
+            });
+
+        }).catch(e => console.log('error firmas db >>', e))
+
 
         let auth = getAuth();
         let user = auth.currentUser
@@ -31,7 +54,6 @@ export function Home () {
         fetch(gateway)
             .then( docs => docs.json() )
             .then( f => {
-                console.log('dibujo -> ', f)
                 return f.data ?  setSign(f.data.image) : null
             }).catch( e => {
                 console.log( 'fetch error', e )
@@ -43,7 +65,7 @@ export function Home () {
 
     return (
         <Container style={{ backgroundColor : '#101010', marginTop : 15 }}>
-            <Row style={{ padding :25 }}>
+            <Row style={{ padding :25}} className="align-items-center">
                 <Col md={6}>
                     <Row>
                         <Col>
@@ -69,7 +91,11 @@ export function Home () {
                                                 <i style={{ color : 'white' }}> {file.toUpperCase()} </i>
                                                 <br/>
                                                 <strong style={{ color : 'white' }}> { new Date( write * 1000  ).toLocaleString() } </strong>
-                                                <strong style={{ wordWrap: "break-word" , color : '#0dddd3',   whiteSpace: "normal" }}> {signature} </strong>
+                                                <strong style={{ wordWrap: "break-word" , color : '#0dddd3',   whiteSpace: "normal" }}> 
+                                                    <a className="tangel" style={{ color : '#0dddd3'}}  href={'https://explorer.iota.org/legacy-devnet/transaction/' + signature}>
+                                                        {signature} 
+                                                    </a>
+                                                </strong>
                                             </p>
                                         </ListGroup.Item>
                                     )
@@ -80,6 +106,10 @@ export function Home () {
                 </Col>
             </Row>
             <Row>
+                <center style={{ backgroundColor : "#121212", padding : 15 }}>
+                    <h1 style={{ padding : 15 }}>Estadisticas Generales</h1>
+                </center>
+
                 <div style={{ backgroundColor : "#121212",padding : 15,display : 'flex', flexDirection : "row", justifyContent : 'space-around', flexWrap : 'wrap' }}>
 
                     <div className="stadistics">
@@ -91,8 +121,21 @@ export function Home () {
                     </div>
                     
                     <div className="stadistics">
-                        <p><strong>TOTAL DOCUMENTOS:</strong>  <i className="numberS">15</i> </p>
+                        <p><strong>TOTAL DOCUMENTOS:</strong>  <i className="numberS">{ totalFiles }</i> </p>
                     </div>
+
+                    <div className="stadistics">
+                        <p><strong>TOTAL USUARIOS:</strong>  <i className="numberS">{ totalFiles }</i> </p>
+                    </div>
+
+                    <div className="stadistics">
+                        <p><strong>AVG TIEMPO RESPUESTA FIRMA:</strong>  <i className="numberS"> 12,820ms </i> </p>
+                    </div>
+                    
+                    <div className="stadistics">
+                        <p><strong>AVG TIEMPO RESPUESTA AUTENTICACION:</strong>  <i className="numberS"> 10,888ms </i> </p>
+                    </div>
+                    
 
                 </div>
             </Row>

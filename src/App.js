@@ -7,6 +7,8 @@ import { createContext } from 'react'
 import Container from './components/container';
 import { Header } from './components/Header'
 import { Footer } from './components/Foooter'
+import { getFirestore } from "firebase/firestore"
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyBlbF796CnVCBnZSAjcSTlzMrJnaPTZmhg",
@@ -20,6 +22,7 @@ const firebaseConfig = {
 };
 
 initializeApp(firebaseConfig);
+export const db = getFirestore();
 
 const GATEWAY =  {
     dev : {
