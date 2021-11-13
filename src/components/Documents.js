@@ -7,7 +7,7 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import QRCode from "react-qr-code";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 
 const MySwal = withReactContent(Swal)
@@ -57,6 +57,7 @@ function DocCard (props)  {
     let url = IPFS + "ipfs/" + hash;
     let signs_gateway = API + "/file"
     const [numPages, setNumPages] = useState('');
+        console.log(numPages)
 
     function onDocumentLoadSuccess({ numPages }) {
         setNumPages(numPages);

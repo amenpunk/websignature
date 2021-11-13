@@ -1,12 +1,12 @@
-import { Spinner,Image,Row, Col, Container,Button, Form} from 'react-bootstrap'
+import {Row, Col, Container} from 'react-bootstrap'
 import { useLocation} from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 
 export function Firmas (){
 
     const location = useLocation();
-    let [hash, setHash] = useState(location.state ? location.state.hash : '');
+    let [hash] = useState(location.state ? location.state.hash : '');
 
     return(
         <Container style={{ backgroundColor : '#101010', marginTop : 15 }}>

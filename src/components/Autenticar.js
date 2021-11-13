@@ -1,8 +1,14 @@
 import { Spinner,Image,Row, Col, Container,Button, Form} from 'react-bootstrap'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+import { getAuth } from 'firebase/auth';
 
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import { API_GATEWAY } from '../App'
+
+const MySwal = withReactContent(Swal)
 
 function Cargando(){
     return(
@@ -18,16 +24,54 @@ export function Autenticar () {
 
     const [file, setFile] = useState(null);
     const [numPages, setNumPages] = useState('');
-    console.log(numPages)
+    let { API } = useContext(API_GATEWAY)
 
     function onDocumentLoadSuccess({ numPages }) {
         setNumPages(numPages);
     }
 
-    useEffect( () => {
-        console.log('file')
-    }, [file] )
 
+    async function Upload () {
+        
+        if(!file){
+            return MySwal.fire({
+                title: 'Ocurrio un error',
+                html: 'Carga un documento primero ',
+                icon: 'error'
+            })
+        }
+
+        let auth = getAuth();
+        let user = auth.currentUser
+
+        const data = new FormData();
+        data.append('filename', file.name );
+        data.append('file', file);
+        data.append('uid', user.uid);
+        data.append('manuscrita', 0);
+        data.append('new_page',0);
+
+
+        let response = await fetch(
+            API + '/ipfs',
+            {
+                method: 'post',
+                body: data,
+            }
+        )
+
+
+        let { status } = await response.json()
+
+            setFile(null)
+        
+            return MySwal.fire({
+                title: status ? 'Excelente' : "Ocurrio un error!!",
+                html: status ? 'Tu documento fue autenticado' :  'Vuelve a intentarlo',
+                icon: status ? "success" : 'error'
+            })
+
+    }
 
 
     return (
@@ -61,7 +105,7 @@ export function Autenticar () {
                         </Form.Group>
 
                         <center>
-                            <Button onClick={ () => console.log('123') }>Autenticar</Button>
+                            <Button onClick={Upload}>Autenticar</Button>
                         </center>
 
                     </Form>
