@@ -30,7 +30,7 @@ const GATEWAY =  {
         IPFS : 'http://localhost:8080/'
     },
     pro : {
-        API : 'http://143.244.178.41:80',
+        API : 'https://143.244.178.41:80',
         IPFS : 'https://ipfs.io/'
     }
 }
