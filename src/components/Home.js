@@ -107,7 +107,7 @@ export function Home () {
             </Row>
             <Row>
                 <center style={{ backgroundColor : "#121212", padding : 15 }}>
-                    <h1 style={{ padding : 15 }}>Estadisticas Generales</h1>
+                    <h1 style={{ padding : 15 }}>Estadísticas Generales</h1>
                 </center>
 
                 <div style={{ backgroundColor : "#121212",padding : 15,display : 'flex', flexDirection : "row", justifyContent : 'space-around', flexWrap : 'wrap' }}>

@@ -91,7 +91,7 @@ export function Firmas (){
         if(!hash){
             return MySwal.fire({
                 title: 'Ups!!',
-                html: 'Ingrea un hash valido',
+                html: 'Ingresa un hash valido',
                 icon: 'error'
             })
         }
