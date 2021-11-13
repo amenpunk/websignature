@@ -27,7 +27,9 @@ export function Firmas (){
     let [hash, setHash] = useState(location.state ? location.state.hash : '');
     let [file, setFile] = useState(null);
     let [filename, setFileName] = useState('');
-    
+    let [first, setFirst] = useState(true);
+    let [loading, setLoding] = useState(false);
+
     const [numPages, setNumPages] = useState('');
     let { API, IPFS } = useContext(API_GATEWAY)
 
@@ -36,6 +38,7 @@ export function Firmas (){
     }
 
     function Firmar() {
+        setLoding(true)
 
         let auth = getAuth();
         let user = auth.currentUser
@@ -56,12 +59,14 @@ export function Firmas (){
         }).then( function(e) {
             return e.json()
         } ).then(function(e) {
-            return MySwal.fire({
+            setLoding(false)
+            MySwal.fire({
                 title: e.head,
                 html: e.message,
                 icon: 'success'
             })
         }).catch(function(e) {
+            setLoding(false)
             return MySwal.fire({
                 title: e.head,
                 html: e.message,
@@ -73,7 +78,12 @@ export function Firmas (){
 
 
     useEffect( () => {
+        if(first){
+            ValidateAndSign()
+            setFirst(false)
+        }
         setFile(null)
+
     }, [hash] )
 
     async function ValidateAndSign() {
@@ -85,6 +95,8 @@ export function Firmas (){
                 icon: 'error'
             })
         }
+        
+        setLoding(true)
 
         let gateway = API + "/validate?hash=" + hash
         let docs = await fetch(gateway)
@@ -92,63 +104,85 @@ export function Firmas (){
         console.log('FILES -> ',files)
 
         if(!files || files.data.length <= 0) {
-            return MySwal.fire({
+            MySwal.fire({
                 title: 'Ups!!',
                 html: 'Ingrea un hash valido',
                 icon: 'error'
             })
-
+            return setLoding(false)
         }
-        
+
 
         let { hash : shash, filename } = files.data.shift()
         let fileurl =  IPFS + 'ipfs/' + shash
         setFile(fileurl)
         setFileName(filename)
+        return setLoding(false)
 
 
     }
 
 
     return(
-        <Container style={{ backgroundColor : '#101010', marginTop : 15 }}>
-            <Row>
-                <Col style={{ padding : '20%' }}>
 
-                    {
-                        file ? 
-                            <center style={{ padding : 15 }}>
-                                <Document loading={<Cargando/>} file={file} onLoadSuccess={onDocumentLoadSuccess} >
-                                    <Page renderMode="canvas" height={200} width={200} pageNumber={1} loading={<Cargando/>} />
-                                </Document>
+        <>
+            {
+                loading 
+
+                    ? 
+
+                    ( 
+                        <div style={{ padding : '30%', backgroundColor : '#101010' }}> 
+                            <center >
+                                <h1 style={{ padding : 15 , marginBottom : 15}}  >Cargando.....</h1>
+                                <Cargando/> 
                             </center>
-                        : undefined
+                        </div>
+                    )
+                    :
 
-                    }
+                    (
 
+                        <Container style={{ backgroundColor : '#101010', marginTop : 15 }}>
+                            <Row>
+                                <Col style={{ padding : '20%' }}>
 
+                                    {
+                                        file ? 
+                                            <center style={{ padding : 15 }}>
+                                                <Document loading={<Cargando/>} file={file} onLoadSuccess={onDocumentLoadSuccess} >
+                                                    <Page renderMode="canvas" height={200} width={200} pageNumber={1} loading={<Cargando/>} />
+                                                </Document>
+                                            </center>
+                                            : undefined
 
-                    <Form>
+                                    }
 
-                        <Form.Group controlId="formFileLg" className="mb-3">
-                            <Form.Control
-                                value={hash}
-                                placeholder="Pega el hash de un documento autenticado"
-                                type="text" 
-                                size="lg" 
-                                onChange={(e) => setHash(e.target.value)}
-                            />
-                        </Form.Group>
+                                    <Form>
 
-                        <center>
-                            <Button onClick={!file ?  ValidateAndSign : Firmar}> { !file ? "Validar" : "Firmar" }</Button>
-                        </center>
+                                        <Form.Group controlId="formFileLg" className="mb-3">
+                                            <Form.Control
+                                                value={hash}
+                                                placeholder="Pega el hash de un documento autenticado"
+                                                type="text" 
+                                                size="lg" 
+                                                onChange={(e) => setHash(e.target.value)}
+                                            />
+                                        </Form.Group>
 
-                    </Form>
+                                        <center>
+                                            <Button onClick={!file ?  ValidateAndSign : Firmar}> { !file ? "Validar" : "Firmar" }</Button>
+                                        </center>
 
-                </Col>
-            </Row>
-        </Container>
+                                    </Form>
+
+                                </Col>
+                            </Row>
+                        </Container>
+                    )
+            }
+
+        </>
     )
 
 }
